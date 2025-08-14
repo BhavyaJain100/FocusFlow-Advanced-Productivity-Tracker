@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Productivity Tracker</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+             <div class="header-content">
+                 <h1><i class="fas fa-calendar-check"></i> Productivity Tracker</h1>
+                 <div class="date-display" id="currentDateHeader"></div>
+                 <div class="productivity-display">Today's Productivity: <span id="productivityPercent">0%</span></div>
+                 <div class="motivational-quote" id="motivationalQuote"></div>
+             </div>
+             <div class="header-controls">
+                 <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i></button>
+             </div>
+        </header>
+
+        <div class="nav-tabs">
+            <button class="tab-btn active" data-page="dashboard"><i class="fas fa-home"></i> <span>Dashboard</span></button>
+            <button class="tab-btn" data-page="timetable"><i class="fas fa-table"></i> <span>Timetable</span></button>
+            <button class="tab-btn" data-page="analysis"><i class="fas fa-chart-bar"></i> <span>Analysis</span></button>
+            <button class="tab-btn" data-page="overall-analysis"><i class="fas fa-globe"></i> <span>Overall</span></button>
+            <button class="tab-btn" data-page="achievements"><i class="fas fa-trophy"></i> <span>Achievements</span></button>
+            <button class="tab-btn" data-page="journal"><i class="fas fa-book"></i> <span>Journal</span></button>
+            <button class="tab-btn" data-page="settings"><i class="fas fa-cog"></i> <span>Settings</span></button>
+        </div>
+
+        <section id="dashboard" class="page active">
+            <div class="logs-container">
+                <div class="card">
+                    <h2 class="card-title"><i class="fas fa-check-circle"></i> Today's Checklist</h2>
+                    <div id="todaysChecklist" class="checklist mt-4"><p>No tasks scheduled for today.</p></div>
+                </div>
+                <div class="card">
+                    <h2 class="card-title"><i class="fas fa-clock"></i> Pomodoro Timer</h2>
+                    <div class="pomodoro-container">
+                        <div id="pomodoro-time">25:00</div>
+                        <input type="text" id="pomodoro-task-input" placeholder="What are you working on? (Optional)">
+                        <div class="pomodoro-controls">
+                            <button class="btn btn-primary" id="pomodoro-start"><i class="fas fa-play"></i> Start</button>
+                            <button class="btn btn-primary" id="pomodoro-pause" style="display: none;"><i class="fas fa-pause"></i> Pause</button>
+                            <button class="btn btn-outline" id="pomodoro-reset"><i class="fas fa-sync"></i> Reset</button>
+                        </div>
+                        <div class="pomodoro-settings mt-4">
+                            <button class="btn btn-outline" data-mode="pomodoro">25/5</button>
+                            <button class="btn btn-outline" data-mode="long-pomodoro">50/10</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <h2 class="card-title"><i class="fas fa-pen-fancy"></i> Daily Journal</h2>
+                <textarea id="journal-textarea" placeholder="How was your day? What did you accomplish?"></textarea>
+                <p class="mt-2" style="font-size: 0.8rem; opacity: 0.7;">Your entry is saved automatically when you click away.</p>
+            </div>
+             <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title"><i class="fas fa-lightbulb"></i> Daily Affirmation</h2>
+                    <div>
+                        <button class="btn btn-outline" id="save-affirmation-btn" title="Save to Journal"><i class="fas fa-save"></i> <span>Save</span></button>
+                        <button class="btn btn-outline" id="reload-affirmation" title="New Affirmation"><i class="fas fa-sync"></i></button>
+                    </div>
+                </div>
+                <p id="daily-affirmation" class="motivational-quote" style="font-size: 1.2rem; text-align: center; padding: 1rem;"></p>
+            </div>
+        </section>
+
+        <section id="timetable" class="page">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title" id="calendar-title"><i class="fas fa-calendar-alt"></i> Monthly Schedule</h2>
+                    <div>
+                        <button class="btn btn-outline" id="prevMonthBtn"><i class="fas fa-chevron-left"></i> Prev</button>
+                        <button class="btn btn-outline" id="nextMonthBtn">Next <i class="fas fa-chevron-right"></i></button>
+                        <button class="btn btn-primary" id="cloneTodayBtn"><i class="fas fa-copy"></i> Clone Today to Future</button>
+                        <button class="btn btn-danger" id="uncloneMonthBtn"><i class="fas fa-times"></i> Clear Future Tasks</button>
+                    </div>
+                </div>
+                <div id="calendar" class="calendar-grid mt-4"></div>
+            </div>
+        </section>
+
+        <section id="analysis" class="page">
+            <div class="nav-tabs" id="analysis-nav">
+                <button class="tab-btn active" data-analysis="weekly">Weekly</button>
+                <button class="tab-btn" data-analysis="daily">Daily</button>
+                <button class="tab-btn" data-analysis="monthly">Monthly</button>
+                <button class="tab-btn" data-analysis="task">Task-Specific</button>
+            </div>
+            
+            <div id="analysis-weekly" class="analysis-section active">
+                <div class="card">
+                    <h2 class="card-title"><i class="fas fa-chart-line"></i> Weekly Performance</h2>
+                    <div class="chart-container">
+                        <canvas id="weeklyChart"></canvas>
+                    </div>
+                </div>
+                <div class="card">
+                    <h2 class="card-title"><i class="fas fa-tasks"></i> Weekly Tasks Summary</h2>
+                    <div class="chart-container">
+                        <canvas id="weeklyTasksChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="analysis-daily" class="analysis-section">
+                <div class="card">
+                    <h2 class="card-title"><i class="fas fa-chart-bar"></i> Daily Productivity (Current Month)</h2>
+                    <div class="chart-container">
+                        <canvas id="monthlyLogChart"></canvas>
+                    </div>
+                </div>
+                <div class="card">
+                    <h2 class="card-title"><i class="fas fa-clock"></i> Time Distribution (Current Month)</h2>
+                    <div class="chart-container">
+                        <canvas id="monthlyTimeChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="analysis-monthly" class="analysis-section">
+                <div class="card">
+                    <h2 class="card-title"><i class="fas fa-calendar-alt"></i> Year-at-a-Glance (<span id="monthly-analysis-year"></span>)</h2>
+                    <div class="chart-container">
+                        <canvas id="yearlyByMonthChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="analysis-task" class="analysis-section">
+                <div class="card">
+                    <h2 class="card-title"><i class="fas fa-search"></i> Task-Specific Analysis</h2>
+                    <select id="task-selector" class="btn" style="width: 100%; max-width: 400px; text-align: left; padding: 10px; height: auto; background-color: var(--background); color: var(--text); border: 1px solid var(--border);"></select>
+                    
+                    <div id="task-specific-summary">Select a task to see its analysis.</div>
+
+                    <div class="logs-container mt-4">
+                        <div class="card"><h3 class="card-title">Completion Rate</h3><div class="chart-container"><canvas id="taskCompletionChart"></canvas></div></div>
+                        <div class="card"><h3 class="card-title">Time Spent (Pomodoro)</h3><div id="task-time-spent" style="font-size: 2.5rem; font-weight: bold; text-align:center; margin-top: 2rem;">...</div></div>
+                    </div>
+                    <div class="card mt-4"><h3 class="card-title">Completion History</h3><div id="taskHistoryTableContainer" style="max-height: 280px; overflow-y: auto;"></div></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="journal" class="page">
+            <div class="card">
+                <h2 class="card-title"><i class="fas fa-book-open"></i> All Journal Entries</h2>
+                <div id="journal-history-container"><p>No journal entries found.</p></div>
+            </div>
+        </section>
+        
+        <section id="achievements" class="page">
+            <div class="card">
+                <h2 class="card-title"><i class="fas fa-fire-alt"></i> Daily Streak</h2>
+                <div id="streaks-container" class="streaks-container mt-4"><p>No active streaks.</p></div>
+            </div>
+            <div class="card">
+                <h2 class="card-title"><i class="fas fa-trophy"></i> Achievements</h2>
+                <div class="nav-tabs">
+                    <button class="tab-btn active" data-achievement="earned">Earned</button>
+                    <button class="tab-btn" data-achievement="locked">Yet to Earn</button>
+                </div>
+                <div id="achievements-earned" class="achievements-container mt-4"></div>
+                <div id="achievements-locked" class="achievements-container mt-4" style="display: none;"></div>
+            </div>
+        </section>
+
+        <section id="overall-analysis" class="page">
+            <div class="card">
+                <h2 class="card-title"><i class="fas fa-globe-americas"></i> Lifetime Analysis</h2>
+                <div id="overall-analysis-container" class="overall-analysis"></div>
+            </div>
+        </section>
+
+        <section id="settings" class="page">
+            <div class="card">
+                <h2 class="card-title"><i class="fas fa-paint-brush"></i> Themes</h2>
+                <p>Create a custom theme below to unlock the preset themes!</p>
+                <div class="preset-themes mt-4" id="preset-themes-container">
+                    </div>
+            </div>
+            <div class="card">
+                <h2 class="card-title"><i class="fas fa-palette"></i> Theme Customizer</h2>
+                <div class="settings-grid theme-creator">
+                    <label>Primary: <input type="color" id="primary-color" value="#4361ee"></label>
+                    <label>Background: <input type="color" id="background-color" value="#ffffff"></label>
+                    <label>Card BG: <input type="color" id="card-bg-color" value="#f1f7fe"></label>
+                    <label>Text: <input type="color" id="text-color" value="#333333"></label>
+                </div>
+                <input type="text" id="custom-theme-name" placeholder="Custom Theme Name..." class="mt-4" style="padding: 12px; border-radius: 6px; border: 1px solid var(--border); width: 100%; background-color: var(--background); color: var(--text);">
+                <button class="btn btn-primary mt-4" id="saveThemeBtn"><i class="fas fa-save"></i> Save Custom Theme</button>
+            </div>
+            <div class="card">
+                <h2 class="card-title"><i class="fas fa-database"></i> Data Management</h2>
+                <p>Permanently delete your historical data. This action cannot be undone.</p>
+                <div style="display: flex; gap: 10px; margin-top: 1rem; align-items: center; flex-wrap: wrap;">
+                    <select id="clear-data-range" class="btn" style="background-color: var(--background); color: var(--text); border: 1px solid var(--border);">
+                        <option value="today">Today's Data</option>
+                        <option value="past_7_days">Past 7 Days</option>
+                        <option value="past_30_days">Past 30 Days</option>
+                        <option value="this_month">This Month</option>
+                        <option value="this_year">This Year</option>
+                        <option value="all">All Data</option>
+                    </select>
+                    <button class="btn btn-danger" id="clear-data-btn"><i class="fas fa-trash-alt"></i> Clear Selected Data</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div id="taskModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalTitle"></h2>
+                <span class="close-btn" id="closeModalBtn">&times;</span>
+            </div>
+            <div style="max-height: 50vh; overflow-y: auto;">
+                <table class="modal-table">
+                    <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Task</th>
+                            <th>Category</th>
+                            <th>Priority</th>
+                            <th>Done</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="modalTableBody"></tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <div>
+                    <button class="btn btn-outline" id="modalClonePrevDayBtn"><i class="fas fa-history"></i> Clone Prev Day</button>
+                </div>
+                <div>
+                    <button class="btn btn-primary" id="addTaskRowBtn"><i class="fas fa-plus"></i> Add Row</button>
+                    <button class="btn btn-primary" id="saveTasksBtn"><i class="fas fa-save"></i> Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js" defer></script>
+</body>
+</html>
