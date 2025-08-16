@@ -5,21 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Advanced Productivity Tracker</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
         <header>
-             <div class="header-content">
-                 <h1><i class="fas fa-calendar-check"></i> Productivity Tracker</h1>
-                 <div class="date-display" id="currentDateHeader"></div>
-                 <div class="productivity-display">Today's Productivity: <span id="productivityPercent">0%</span></div>
-                 <div class="motivational-quote" id="motivationalQuote"></div>
-             </div>
-             <div class="header-controls">
-                 <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i></button>
-             </div>
+              <div class="header-content">
+                  <h1><i class="fas fa-calendar-check"></i> Productivity Tracker</h1>
+                  <div class="date-display" id="currentDateHeader"></div>
+                  <div class="productivity-display">Today's Productivity: <span id="productivityPercent">0%</span></div>
+                  <div class="motivational-quote" id="motivationalQuote"></div>
+              </div>
+              <div class="header-controls">
+                  <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i></button>
+              </div>
         </header>
 
         <div class="nav-tabs">
@@ -74,16 +74,81 @@
 
         <section id="timetable" class="page">
             <div class="card">
-                <div class="card-header">
-                    <h2 class="card-title" id="calendar-title"><i class="fas fa-calendar-alt"></i> Monthly Schedule</h2>
-                    <div>
-                        <button class="btn btn-outline" id="prevMonthBtn"><i class="fas fa-chevron-left"></i> Prev</button>
-                        <button class="btn btn-outline" id="nextMonthBtn">Next <i class="fas fa-chevron-right"></i></button>
-                        <button class="btn btn-primary" id="cloneTodayBtn"><i class="fas fa-copy"></i> Clone Today to Future</button>
-                        <button class="btn btn-danger" id="uncloneMonthBtn"><i class="fas fa-times"></i> Clear Future Tasks</button>
+                <div class="timetable-tabs">
+                    <button class="timetable-tab-btn active" data-section="calendar"><i class="fas fa-calendar-alt"></i> Calendar</button>
+                    <button class="timetable-tab-btn" data-section="goals"><i class="fas fa-bullseye"></i> Goals</button>
+                </div>
+                
+                <div id="timetable-calendar" class="timetable-section active">
+                    <div class="card-header">
+                        <h2 class="card-title" id="calendar-title"><i class="fas fa-calendar-alt"></i> Monthly Schedule</h2>
+                        <div>
+                            <button class="btn btn-outline" id="prevMonthBtn"><i class="fas fa-chevron-left"></i> Prev</button>
+                            <button class="btn btn-outline" id="nextMonthBtn">Next <i class="fas fa-chevron-right"></i></button>
+                            <button class="btn btn-primary" id="cloneTodayBtn"><i class="fas fa-copy"></i> Clone Today to Future</button>
+                            <button class="btn btn-danger" id="uncloneMonthBtn"><i class="fas fa-times"></i> Clear Future Tasks</button>
+                        </div>
+                    </div>
+                    
+                    <div class="date-picker">
+                        <input type="date" id="gotoDateInput" placeholder="YYYY-MM-DD">
+                        <button class="btn btn-primary" id="gotoDateBtn"><i class="fas fa-calendar-day"></i> Go to Date</button>
+                    </div>
+                    
+                    <div id="calendar" class="calendar-grid mt-4"></div>
+                </div>
+                
+                <div id="timetable-goals" class="timetable-section">
+                    <div class="goals-container">
+                        <div class="goal-card">
+                            <div class="goal-header">
+                                <h3><i class="fas fa-calendar-week"></i> Weekly Goals</h3>
+                                <div class="goal-select-container">
+                                    <select class="goal-select" id="weeklyYearSelector">
+                                    </select>
+                                    <select class="goal-select" id="weeklyMonthSelector">
+                                    </select>
+                                    <select class="goal-select" id="weeklyWeekSelector">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="goal-content">
+                                <textarea class="goal-input" id="weeklyGoalInput" placeholder="Add a new weekly goal..."></textarea>
+                                <button class="btn btn-primary" id="addWeeklyGoal"><i class="fas fa-plus"></i> Add Goal</button>
+                                <div class="goal-list" id="weeklyGoalsList"></div>
+                            </div>
+                            <div class="goal-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="weeklyProgressFill"></div>
+                                </div>
+                                <div class="progress-text" id="weeklyProgressText">0/0 completed</div>
+                            </div>
+                        </div>
+                        
+                        <div class="goal-card">
+                            <div class="goal-header">
+                                <h3><i class="fas fa-calendar-alt"></i> Monthly Goals</h3>
+                                <div class="goal-select-container">
+                                    <select class="goal-select" id="monthlyYearSelector">
+                                    </select>
+                                    <select class="goal-select" id="monthlyMonthSelector">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="goal-content">
+                                <textarea class="goal-input" id="monthlyGoalInput" placeholder="Add a new monthly goal..."></textarea>
+                                <button class="btn btn-primary" id="addMonthlyGoal"><i class="fas fa-plus"></i> Add Goal</button>
+                                <div class="goal-list" id="monthlyGoalsList"></div>
+                            </div>
+                            <div class="goal-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="monthlyProgressFill"></div>
+                                </div>
+                                <div class="progress-text" id="monthlyProgressText">0/0 completed</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div id="calendar" class="calendar-grid mt-4"></div>
             </div>
         </section>
 
@@ -185,7 +250,7 @@
                 <h2 class="card-title"><i class="fas fa-paint-brush"></i> Themes</h2>
                 <p>Create a custom theme below to unlock the preset themes!</p>
                 <div class="preset-themes mt-4" id="preset-themes-container">
-                    </div>
+                </div>
             </div>
             <div class="card">
                 <h2 class="card-title"><i class="fas fa-palette"></i> Theme Customizer</h2>
@@ -212,6 +277,17 @@
                     </select>
                     <button class="btn btn-danger" id="clear-data-btn"><i class="fas fa-trash-alt"></i> Clear Selected Data</button>
                 </div>
+                <div class="card">
+                    <h2 class="card-title"><i class="fas fa-calendar-times"></i> Delete Specific Dates</h2>
+                    <p>Delete data for specific dates in YYYY-MM-DD format (comma separated)</p>
+                    
+                    <div class="date-picker-container">
+                        <input type="text" id="specificDateInput" placeholder="e.g., 2024-08-10, 2024-08-15">
+                        <button class="btn btn-danger delete-date-btn" id="deleteSpecificDatesBtn">
+                            <i class="fas fa-trash-alt"></i> Delete Dates
+                        </button>
+                    </div>
+                </div>
             </div>
         </section>
     </div>
@@ -231,7 +307,7 @@
                             <th>Category</th>
                             <th>Priority</th>
                             <th>Done</th>
-                            <th></th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody id="modalTableBody"></tbody>
@@ -240,6 +316,9 @@
             <div class="modal-footer">
                 <div>
                     <button class="btn btn-outline" id="modalClonePrevDayBtn"><i class="fas fa-history"></i> Clone Prev Day</button>
+                    <button class="btn btn-outline" id="importTasksBtn"><i class="fas fa-file-import"></i> Paste & Import</button>
+                    <button class="btn btn-outline" id="importFromFileBtn"><i class="fas fa-file-upload"></i> From File</button>
+                    <input type="file" id="importFileInput" accept=".txt,.csv,.tsv" style="display: none;">
                 </div>
                 <div>
                     <button class="btn btn-primary" id="addTaskRowBtn"><i class="fas fa-plus"></i> Add Row</button>
@@ -249,6 +328,23 @@
         </div>
     </div>
     
-    <script src="script.js" defer></script>
+    <div id="importModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Import Tasks by Pasting</h2>
+                <span class="close-btn" id="closeImportModalBtn">&times;</span>
+            </div>
+            <div>
+                <p>Copy columns from Excel, Google Sheets, or a Word table and paste below.</p>
+                <p><strong>Format:</strong> Time (optional) &lt;tab&gt; Task &lt;tab&gt; Category (optional) &lt;tab&gt; Priority (optional)</p>
+                <textarea id="import-textarea" placeholder="09:00	Project Research	work	high&#10;11:00	Read Chapter 5	study	medium"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" id="importDataBtn"><i class="fas fa-check"></i> Import Data</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
 </body>
 </html>
