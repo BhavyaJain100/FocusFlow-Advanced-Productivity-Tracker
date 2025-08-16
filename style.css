@@ -16,6 +16,7 @@
     --study: #b5ead7;
     --personal: #c7ceea;
     --work: #ffdac1;
+    --break: #a2d2ff;
     --pink: #f72585;
     --purple: #7209b7;
     --cute-bg: #fff0f3;
@@ -40,7 +41,6 @@
     --card-bg: #14213d;
     --text: #ffffff;
     --border: #370617;
-    --completed: #f8961e;
 }
 
 .dark-theme {
@@ -65,6 +65,7 @@ body {
     transition: background-color 0.3s, color 0.3s;
     min-height: 100vh;
     padding-bottom: 40px;
+    background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
 }
 
 .container {
@@ -135,6 +136,11 @@ h1 i { font-size: 1.8rem; }
     margin-bottom: 25px; 
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     border: 1px solid var(--border);
+    transition: transform 0.3s ease;
+}
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
 }
 
 .card-header {
@@ -196,6 +202,7 @@ h1 i { font-size: 1.8rem; }
     font-weight: bold; 
     margin: 10px 0; 
     letter-spacing: 2px;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 #pomodoro-task-input { 
     width: 80%; 
@@ -317,27 +324,27 @@ h1 i { font-size: 1.8rem; }
     justify-content: center;
     font-size: 2rem;
 }
-.theme-swatch .delete-theme-btn { 
-    background: var(--danger); 
-    border: none; 
-    color: white; 
-    font-size: 0.8rem; 
-    cursor: pointer; 
-    opacity: 0; 
-    transition: opacity 0.2s; 
-    border-radius: 50%; 
-    width: 20px; 
-    height: 20px; 
-    position: absolute; 
-    top: 5px; 
-    right: 5px; 
+.theme-swatch .delete-theme-btn {
+    background: var(--danger);
+    border: none;
+    color: white;
+    font-size: 0.8rem;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.2s;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    top: 5px;
+    right: 5px;
     z-index: 10;
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
-.theme-swatch:hover .delete-theme-btn { 
-    opacity: 1; 
+.theme-swatch:hover .delete-theme-btn {
+    opacity: 1;
 }
 .theme-label {
     position: absolute;
@@ -605,6 +612,8 @@ h1 i { font-size: 1.8rem; }
     margin-top: 25px; 
     display: flex; 
     justify-content: space-between; 
+    flex-wrap: wrap;
+    gap: 10px;
 }
 .overall-analysis details { 
     border: 1px solid var(--border); 
@@ -669,6 +678,10 @@ h1 i { font-size: 1.8rem; }
     background-color: var(--health);
     color: #7a0c2e;
 }
+.badge-break {
+    background-color: var(--break);
+    color: #003566;
+}
 #task-specific-summary {
     background-color: var(--background);
     border: 1px solid var(--border);
@@ -677,6 +690,251 @@ h1 i { font-size: 1.8rem; }
     margin-top: 1rem;
     font-size: 1.1rem;
     line-height: 1.6;
+}
+
+/* New styles for timetable tabs */
+.timetable-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    background-color: var(--card-bg);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.timetable-tab-btn {
+    flex: 1;
+    padding: 12px 10px;
+    background: none;
+    border: none;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-width: 120px;
+}
+
+.timetable-tab-btn:hover { background-color: rgba(67, 97, 238, 0.1); }
+.timetable-tab-btn.active { background-color: var(--primary); color: white; }
+
+.timetable-section { display: none; }
+.timetable-section.active { display: block; }
+
+/* Goals styles */
+.goals-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.goal-card {
+    background-color: var(--card-bg);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    border: 1px solid var(--border);
+}
+
+.goal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    border-bottom: 2px solid var(--primary);
+    padding-bottom: 10px;
+}
+
+.goal-content {
+    min-height: 150px;
+}
+
+.goal-input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    margin-bottom: 10px;
+    background-color: var(--background);
+    color: var(--text);
+}
+
+.goal-select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    margin-bottom: 15px;
+    background-color: var(--background);
+    color: var(--text);
+}
+
+.goal-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.goal-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    background-color: var(--background);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    border-left: 3px solid var(--primary);
+}
+
+.goal-item.completed {
+    border-left-color: var(--completed);
+}
+
+.goal-item input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.goal-item.completed .goal-text {
+    text-decoration: line-through;
+    color: var(--completed);
+}
+
+.goal-text {
+    flex: 1;
+}
+
+.goal-actions {
+    display: flex;
+    gap: 5px;
+}
+
+.btn-icon {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text);
+    opacity: 0.6;
+    transition: opacity 0.2s;
+    padding: 5px;
+}
+.btn-icon:hover {
+    opacity: 1;
+}
+.goal-edit-btn:hover { color: var(--primary); }
+.goal-delete-btn:hover { color: var(--danger); }
+
+.goal-progress {
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.progress-bar {
+    height: 8px;
+    background-color: #e9ecef;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background-color: var(--completed);
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+.progress-text {
+    font-size: 0.9rem;
+    text-align: right;
+}
+
+/* Insert button styles */
+.insert-btn {
+    background: transparent;
+    border: none;
+    color: var(--success);
+    cursor: pointer;
+    font-size: 1.2rem;
+    padding: 0 5px;
+    margin-right: 5px;
+}
+
+.insert-btn:hover {
+    color: var(--primary);
+}
+
+/* Specific date deletion styles */
+.date-picker-container {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+    align-items: center;
+}
+
+#specificDateInput {
+    flex: 1;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background-color: var(--background);
+    color: var(--text);
+}
+
+.delete-date-btn {
+    padding: 8px 15px;
+}
+
+/* Date picker styles */
+.date-picker {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-top: 15px;
+}
+
+#gotoDateInput {
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background-color: var(--background);
+    color: var(--text);
+    width: 150px;
+}
+
+/* Goal selectors */
+.goal-select-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.goal-select-container select {
+    min-width: 100px;
+}
+
+/* Import Modal Styles */
+#import-textarea {
+    width: 100%;
+    height: 200px;
+    padding: 10px;
+    font-family: monospace;
+    font-size: 0.9rem;
+    margin-top: 10px;
+    background-color: var(--background);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 8px;
 }
 
 /* Responsive Design */
@@ -723,6 +981,10 @@ h1 i { font-size: 1.8rem; }
     
     #pomodoro-time {
         font-size: 3rem;
+    }
+    
+    .goal-select-container {
+        flex-direction: column;
     }
 }
 
